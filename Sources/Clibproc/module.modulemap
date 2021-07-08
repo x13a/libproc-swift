@@ -1,0 +1,5 @@
+module Clibproc [system] {
+    header "shim.h"
+    link "proc"
+    export *
+}
