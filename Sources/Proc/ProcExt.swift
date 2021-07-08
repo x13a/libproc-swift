@@ -100,7 +100,7 @@ public struct list_proc_fdinfo: ProcProtocolListInfo {
     public static func flavor() -> Int32 { PROC_PIDLISTFDS }
 }
 
-public struct list_threads: ProcProtocolListInfo {
+public struct list_proc_threads: ProcProtocolListInfo {
     public typealias Item = UInt64
     public static func flavor() -> Int32 { PROC_PIDLISTTHREADS }
 }
