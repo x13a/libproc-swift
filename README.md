@@ -1,3 +1,3 @@
 # libproc-swift
 
-Swift wrapper for libproc library.
+Swift wrapper for `libproc` library.
