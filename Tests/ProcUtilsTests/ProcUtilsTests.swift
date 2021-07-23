@@ -2,10 +2,13 @@
     @testable import ProcUtils
 
     final class ProcUtilsTests: XCTestCase {
-        func testExample() {
-            // This is an example of a functional test case.
-            // Use XCTAssert and related functions to verify your tests produce the correct
-            // results.
-            
+        func testPpid() throws {
+            let ppid = try ProcUtils.ppid(getpid()).get()
+            assert(ppid == getppid())
+        }
+        
+        func testCwd() throws {
+            let cwd = try ProcUtils.cwd(getpid()).get()
+            print(cwd)
         }
     }
