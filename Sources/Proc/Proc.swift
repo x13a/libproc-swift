@@ -135,7 +135,7 @@ public struct Proc {
     ) -> Result<[T.Item], Error> {
         let flavor = T.flavor()
         var bufferSize = proc_pidinfo(pid, flavor, arg, nil, 0)
-        guard bufferSize > 0 else {
+        guard bufferSize >= 0 else {
             return .failure(.rv(bufferSize))
         }
         let itemSize = MemoryLayout<T.Item>.stride
@@ -144,7 +144,7 @@ public struct Proc {
             count: Int(bufferSize) / itemSize
         )
         bufferSize = proc_pidinfo(pid, flavor, arg, &buffer, bufferSize)
-        return bufferSize > 0 ?
+        return bufferSize >= 0 ?
             .success(Array(buffer[0..<Int(bufferSize) / itemSize])) :
             .failure(.rv(bufferSize))
     }
