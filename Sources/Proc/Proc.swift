@@ -64,6 +64,9 @@ public struct Proc {
         guard bufferSize >= 0 else {
             return .failure(.rv(bufferSize))
         }
+        guard bufferSize > 0 else {
+            return .success([])
+        }
         let pidSize = MemoryLayout<pid_t>.stride
         var pids = [pid_t](repeating: 0, count: Int(bufferSize) / pidSize)
         bufferSize = proc_listpids(
@@ -138,6 +141,9 @@ public struct Proc {
         guard bufferSize >= 0 else {
             return .failure(.rv(bufferSize))
         }
+        guard bufferSize > 0 else {
+            return .success([])
+        }
         let itemSize = MemoryLayout<T.Item>.stride
         var buffer = Array(
             repeating: T.Item(),
@@ -157,6 +163,9 @@ public struct Proc {
         switch pidInfo(proc_taskinfo.self, pid, arg) {
         case .success(let info): threadNum = info.pti_threadnum
         case .failure(let err): return .failure(err)
+        }
+        guard threadNum > 0 else {
+            return .success([])
         }
         var buffer = [UInt64](repeating: 0, count: Int(threadNum))
         let itemSize = MemoryLayout<UInt64>.stride
