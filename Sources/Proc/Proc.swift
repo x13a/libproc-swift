@@ -61,7 +61,7 @@ public struct Proc {
     ) -> Result<[pid_t], Error> {
         let rawType = UInt32(type.rawValue)
         var bufferSize = proc_listpids(rawType, typeInfo, nil, 0)
-        guard bufferSize > 0 else {
+        guard bufferSize >= 0 else {
             return .failure(.rv(bufferSize))
         }
         let pidSize = MemoryLayout<pid_t>.stride
@@ -72,7 +72,7 @@ public struct Proc {
             &pids,
             bufferSize
         )
-        return bufferSize > 0 ?
+        return bufferSize >= 0 ?
             .success(Array(pids[0..<Int(bufferSize) / pidSize])) :
             .failure(.rv(bufferSize))
     }
