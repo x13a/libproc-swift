@@ -27,9 +27,6 @@ extension Darwin.pipe_fdinfo:             ProcProtocolInit {}
 extension Darwin.kqueue_fdinfo:           ProcProtocolInit {}
 extension Darwin.appletalk_fdinfo:        ProcProtocolInit {}
 
-// list threads
-extension UInt64: ProcProtocolInit {}
-
 public protocol ProcProtocolBase {
     associatedtype Item: ProcProtocolInit
     static func flavor() -> Int32
@@ -98,11 +95,6 @@ public struct proc_thread64info: ProcProtocolInfo {
 public struct list_proc_fdinfo: ProcProtocolListInfo {
     public typealias Item = Darwin.proc_fdinfo
     public static func flavor() -> Int32 { PROC_PIDLISTFDS }
-}
-
-public struct list_proc_threads: ProcProtocolListInfo {
-    public typealias Item = UInt64
-    public static func flavor() -> Int32 { PROC_PIDLISTTHREADS }
 }
 
 public struct list_proc_fileportinfo: ProcProtocolListInfo {

@@ -148,6 +148,31 @@ public struct Proc {
             .success(Array(buffer[0..<Int(bufferSize) / itemSize])) :
             .failure(.rv(bufferSize))
     }
+    
+    public static func listThreads(
+        _ pid: pid_t,
+        _ arg: UInt64
+    ) -> Result<[UInt64], Error> {
+        var threadNum: Int32 = 0
+        switch pidInfo(proc_taskinfo.self, pid, arg) {
+        case .success(let info): threadNum = info.pti_threadnum
+        case .failure(let err): return .failure(err)
+        }
+        var buffer = [UInt64](repeating: 0, count: Int(threadNum))
+        let itemSize = MemoryLayout<UInt64>.stride
+        let bufferSize = proc_pidinfo(
+            pid,
+            PROC_PIDLISTTHREADS,
+            arg,
+            &buffer,
+            Int32(itemSize * buffer.count)
+        )
+        return bufferSize >= 0 ?
+            .success(
+                Array(buffer[0..<Int(bufferSize) / itemSize])
+                    .filter { $0 != 0 }) :
+            .failure(.rv(bufferSize))
+    }
 
     public static func pidFdInfo<T: ProcProtocolFdInfo>(
         _: T.Type,
