@@ -1,5 +1,7 @@
 import Swift
+import Darwin
 
+@_implementationOnly
 import Clibproc
 
 // https://github.com/apple/darwin-xnu/blob/main/libsyscall/wrappers/libproc/libproc.c
